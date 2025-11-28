@@ -1,0 +1,11 @@
+#Konffitiedosto, lisäietoa: https://www.raspberrypi.com/documentation/computers/config_txt.html#what-is-config-txt
+cat /boot/firmware/config.txt
+
+#Jäähdytyksen nykytilanne
+cat /sys/class/thermal/cooling_device0/cur_state
+
+#Tuulettimen RPM ATM
+cat /sys/devices/platform/cooling_fan/hwmon/hwmon3/fan1_input
+
+#Pin nykyinen lämpotila - jaa 1000 saadaksesi Celcius
+cat /sys/class/thermal/thermal_zone0/temp

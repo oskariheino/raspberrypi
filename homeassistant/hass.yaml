@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: hass
+  name: hass
+  namespace: homeassistant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hass
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: hass
+    spec:
+      containers:
+      - image: homeassistant/home-assistant
+        name: home-assistant
+        resources: {}
+        volumeMounts:
+        - name: hass-pv
+          mountPath: /mnt/homeassistant
+      volumes:
+      - name: hass-pv
+        persistentVolumeClaim:
+          claimName: hass-pvc
+status: {}

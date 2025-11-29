@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: nextcloud
+  name: nextcloud
+  namespace: nextcloud
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nextcloud
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nextcloud
+    spec:
+      containers:
+      - image: nextcloud:latest
+        name: nextcloud
+        env:
+        - name: MYSQL_HOST
+          value: mariadb.nextcloud.svc.cluster.local
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-secret
+              key: MARIADB_DATABASE
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-secret
+              key: MARIADB_USER
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-secret
+              key: MARIADB_PASSWORD
+        volumeMounts:
+        - name: nextcloud-pv
+          mountPath: /var/www/html/data
+      volumes:
+      - name: nextcloud-pv
+        persistentVolumeClaim:
+          claimName: nextcloud-pvc
+status: {}

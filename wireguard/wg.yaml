@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: wireguard
+  name: wireguard
+  namespace: wireguard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wireguard
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: wireguard
+    spec:
+      containers:
+      - image: ghcr.io/wg-easy/wg-easy:15
+        name: wg-easy
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          capabilities:
+            add:
+              - NET_ADMIN
+              - SYS_MODULE
+        volumeMounts:
+          - mountPath: /etc/wireguard
+            name: wireguard-pv
+      restartPolicy: Always
+      volumes:
+        - name: wireguard-pv
+          persistentVolumeClaim:
+            claimName: wireguard-pvc
+status: {}

@@ -1,7 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   labels:
     app: hass
   name: hass
@@ -14,19 +13,18 @@ spec:
   strategy: {}
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: hass
     spec:
       containers:
       - image: homeassistant/home-assistant
         name: home-assistant
-        resources: {}
+        imagePullPolicy: IfNotPresent
+        # Mounting the persistent volume here ensures HomeAssistant configs survive Raspberry Pi reboots and pod restarts.
         volumeMounts:
         - name: hass-pv
-          mountPath: /mnt/homeassistant
+          mountPath: /config
       volumes:
       - name: hass-pv
         persistentVolumeClaim:
           claimName: hass-pvc
-status: {}

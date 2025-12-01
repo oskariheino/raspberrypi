@@ -1,7 +1,26 @@
+# Persistent volume for Nextcloud data - such as my personal uploaded files. (USER DATA)
+# This will be mounted at /var/www/html/data in the Nextcloud container.
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nextcloud-pvc
+  name: nextclouddata-pvc
+  namespace:  nextcloud
+spec:
+  storageClassName: local-path # Local Path Provisioner provisions volumes from the node's local storage. Great for single-node k3s homelab.
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 15Gi # Size for any upload data. Choose according to your needs.
+
+---
+
+# Persistent volume for Nextloud configuration and app state. Configs and app state persist boots, ie. no need to set up Nextcloud after each boot or POD restart.
+# Separating config and data makes backups and restores easier.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nextcloudconfig-pvc
   namespace:  nextcloud
 spec:
   storageClassName: local-path
@@ -9,4 +28,4 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 15Gi
+      storage: 1Gi # Configs need much less storage space.

@@ -1,3 +1,5 @@
+# ClusterIP Service to expose MariaDB inside the Kubernetes cluster
+# Nextcloud (running in the same cluster/namespace) will connect to mariadb.nextcloud.svc.cluster.local:3306
 apiVersion: v1
 kind: Service
 metadata:
@@ -9,4 +11,4 @@ spec:
     name: mysql
   selector:
     app: mariadb
-  type: ClusterIP
+  type: ClusterIP # Internal-only service

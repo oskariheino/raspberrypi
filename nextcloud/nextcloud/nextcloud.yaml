@@ -19,11 +19,12 @@ spec:
         app: nextcloud
     spec:
       containers:
-      - image: nextcloud:latest
+      - image: nextcloud:apache # The apache tag contains a full Nextcloud installation including an apache web server. This is the default for the latest tag.
         name: nextcloud
-        env:
-        - name: MYSQL_HOST
-          value: mariadb.nextcloud.svc.cluster.local
+        imagePullPolicy: IfNotPresent
+        env: # Environment variables - database connection and basic config.
+        - name: MYSQL_HOST # This tells Nextcloud where to connect for metadata (users, file index, shares).
+          value: mariadb.nextcloud.svc.cluster.local # DNS name of the MariaDB service inside the cluster.
         - name: MYSQL_DATABASE
           valueFrom:
             secretKeyRef:
@@ -40,10 +41,19 @@ spec:
               name: mariadb-secret
               key: MARIADB_PASSWORD
         volumeMounts:
-        - name: nextcloud-pv
-          mountPath: /var/www/html/data
+        - name: nextclouddata-pv
+          mountPath: /var/www/html/data # This needs to be the path for any uploads to persist boots and pod restarts. 
+        - name: nextcloudconfig-pv
+          mountPath: /var/www/html/config # This needs to be the path for Nextcloud settings to persist boots and pod restarts. No need to re-initialize.
       volumes:
-      - name: nextcloud-pv
+      - name: nextclouddata-pv
         persistentVolumeClaim:
-          claimName: nextcloud-pvc
-status: {}
+          claimName: nextclouddata-pvc
+      - name: nextcloudconfig-pv
+        persistentVolumeClaim:
+          claimName: nextcloudconfig-pvc
+        # -------------------------
+        # Recommended to add later:
+        # - resources.requests/limits to prevent OOM on Pi
+        # - livenessProbe/readinessProbe to let Kubernetes manage unhealthy containers
+        # - securityContext (runAsUser, fsGroup) so file permissions are consistent

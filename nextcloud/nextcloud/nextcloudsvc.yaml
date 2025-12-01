@@ -10,4 +10,7 @@ spec:
   - port: 80
     targetPort: 80
     protocol: TCP
-  type: LoadBalancer
+  type: LoadBalancer # By default, K3s provides a load balancer known as ServiceLB that uses available host ports.
+                     # Fine for my use case. Works kind of like NodePort. I use Raspberry Pi IP and a PORT assigned by ServiceLB automatically to connect to services.
+                     # IP:PORT
+

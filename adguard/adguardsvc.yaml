@@ -1,0 +1,66 @@
+# 1) Service for the initial setup UI.
+# When AdGuard starts for the first time and has no config.
+# Exposes a temporary setup wizard on port 3000.
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: adguardhome
+  name: initialui
+  namespace: adguard
+spec:
+  ports:
+  - port: 3000          # The install wizard runs here until configuration is completed
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: adguardhome
+  type: LoadBalancer    # By default, K3s provides a load balancer known as ServiceLB that uses available host ports.
+                        # Fine for my use case. Works kind of like NodePort. I use Raspberry Pi IP and a PORT assigned by ServiceLB automatically to connect to services.
+                        # IP:PORT
+---
+# 2) Service for the main Web UI after initial configuration is completed.
+# This is where you manage DNS rules, filtering lists, log retention, etc.
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: adguardhome
+  name: adguardui
+  namespace: adguard
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80      # AdGuard Home's main web interface
+  selector:
+    app: adguardhome
+  type: LoadBalancer
+---
+# 3) Service exposing DNS itself.
+# DNS requires both TCP and UDP on port 53.
+# externalTrafficPolicy: Local - Useful for AdGuard to show client names correctly.
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: adguardhome
+  name: adguarddns
+  namespace: adguard
+spec:
+  ports:
+  - port: 53
+    name: dns-tcp
+    protocol: TCP
+    targetPort: 53
+  - port: 53
+    name: dns-udp
+    protocol: UDP
+    targetPort: 53
+  externalTrafficPolicy: Local  # Ensures real client IPs are visible to AdGuard
+  selector:
+    app: adguardhome
+  type: LoadBalancer            # Exposes DNS externally — router or clients can use the Pi directly as DNS

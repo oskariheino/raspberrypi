@@ -4,9 +4,10 @@ metadata:
   name: hass-pvc
   namespace: homeassistant
 spec:
-  storageClassName: local-path
+  storageClassName: local-path  # Local Path Provisioner provisions volumes from the node's local storage. Great for single-node k3s homelab.
+                                # Creates local PVs automatically under /var/lib/rancher/k3s/storage
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi
+      storage: 5Gi              # Home Assistant stores configs, logs, databases → 5 GB is safe

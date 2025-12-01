@@ -1,12 +1,31 @@
+# Persistent storage for AdGuard Home runtime data.
+# This MUST persist across restarts so your DNS history, statistics, and DHCP info are not lost.
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: adguard-pvc
+  name: adguardstorage-pvc
   namespace: adguard
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi
+      storage: 5Gi             # Data (logs, cache, query history). Size depends on retention settings.
+  storageClassName: local-path # Local Path Provisioner provisions volumes from the node's local storage. Great for single-node k3s homelab.
+
+---
+# Persistent storage for AdGuard Home configuration.
+# This holds YAML configuration files that define DNS servers, upstreams, filters, clients, UI passwords, etc.
+# This is made persistent to avoid having to initialize AdGuard eacch time after reboots or pod restarts.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: adguardconfig-pvc
+  namespace: adguard
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi            # Plenty of storage for configuration files.
   storageClassName: local-path

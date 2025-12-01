@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: adguardhome
+  name: adguardhome
+  namespace: adguard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: adguardhome
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: adguardhome
+    spec:
+      hostNetwork: true
+      containers:
+      - image: adguard/adguardhome # Official AdGuard Home image. Contains DNS server + Web UI.
+        name: adguardhome
+        imagePullPolicy: IfNotPresent
+        # Two separate PVCs: one for working data and one for config.
+        # AdGuard expects these to be mounted at these exact paths! Otherwise critical data won't persist through boots and pod restarts.
+        volumeMounts:
+        - name: adguard-data
+          mountPath: /opt/adguardhome/work  # Persistent logs, filters, DHCP leases, query history
+        - name: adguard-config
+          mountPath: /opt/adguardhome/conf  # Persistent configuration of the AdGuard service
+      volumes:
+      - name: adguard-data
+        persistentVolumeClaim:
+          claimName: adguardstorage-pvc
+      - name: adguard-config
+        persistentVolumeClaim:
+          claimName: adguardconfig-pvc
+        # --- Optional adds for future:
+        # resources:
+        #
+        # livenessProbe:
+        #
+        # readinessProbe:
+        #

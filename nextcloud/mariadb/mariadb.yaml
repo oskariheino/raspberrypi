@@ -18,7 +18,9 @@ spec:
     spec:
       containers:
       - name: mariadb
-        image: mariadb:latest
+        image: mariadb:12
+        imagePullPolicy: IfNotPresent
+        # These environment variables initialize the DB on first start and allow Nextcloud to connect. Pulled from the mariadb-secret.
         env:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
@@ -40,6 +42,7 @@ spec:
             secretKeyRef:
               name: mariadb-secret
               key: MARIADB_PASSWORD
+        # Mount the PVC into MariaDB's data directory so DB files persist.
         volumeMounts:
         - name: mariadb-pv
           mountPath: /var/lib/mysql

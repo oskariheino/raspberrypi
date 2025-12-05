@@ -32,12 +32,12 @@ metadata:
   namespace: adguard
 spec:
   ports:
-  - port: 80
+  - port: 8080          # 80 was taken so 8080 it is now.
     protocol: TCP
-    targetPort: 80      # AdGuard Home's main web interface
+    targetPort: 80      # AdGuard Home's main web interface | This one needs to be 80 
   selector:
     app: adguardhome
-  type: LoadBalancer
+  type: LoadBalancer     # I will expose this with Ingress, which is why ClusterIP is fitting here
 ---
 # 3) Service exposing DNS itself.
 # DNS requires both TCP and UDP on port 53.

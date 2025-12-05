@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:                        # Add an annotation indicating the issuer to use for signing the fresh certificates
+    cert-manager.io/cluster-issuer: ca-issuer
+  name: nginx-ingress
+  namespace: nginx
+spec:
+  ingressClassName: traefik           # K3s comes with Traefik ingress controller by default, unless specified in the installation
+  rules:
+  - host: nginx.192-168-0-37.nip.io   # I will use nip.io so I don't have to edit any /etc/hosts files | read more on nip.io on nip.io 
+    http:
+      paths:
+      - backend:
+          service:
+            name: nginxsvc
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:                                # Placing a host in the TLS config will determine what ends up in the cert's subjectAltNames
+  - hosts:
+    - nginx.192-168-0-37.nip.io
+    secretName: nginx-cert            # cert-manager will store the created certificate in this secret.

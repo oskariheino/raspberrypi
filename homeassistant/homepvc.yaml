@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: hass-pvc
+  name: home-pvc
   namespace: homeassistant
 spec:
   storageClassName: local-path  # Local Path Provisioner provisions volumes from the node's local storage. Great for single-node k3s homelab.

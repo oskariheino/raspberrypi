@@ -1,0 +1,26 @@
+# helm install --set step-certificates.enabled=false -f config.yaml autocert smallstep/autocert < fetches data from config.yaml
+level=WARN msg="unable to find exact version; falling back to closest available version" chart=autocert requested="" selected=1.20.5
+NAME: autocert
+LAST DEPLOYED: Thu Dec  4 13:30:46 2025
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+DESCRIPTION: Install complete
+NOTES:
+Thanks for installing Autocert.
+
+1. Enable Autocert in your namespaces:
+   kubectl label namespace default autocert.step.sm=enabled
+
+2. Check the namespaces where Autocert is enabled:
+   kubectl get namespace -L autocert.step.sm
+
+3. Get the PKI and Provisioner secrets running these commands:
+   kubectl get -n default -o jsonpath='{.data.password}' secret/autocert-step-certificates-ca-password | base64 --decode
+   kubectl get -n default -o jsonpath='{.data.password}' secret/autocert-step-certificates-provisioner-password | base64 --decode
+
+4. Get the CA URL and the root certificate fingerprint running this command:
+   kubectl -n default logs job.batch/autocert
+
+5. Delete the configuration job running this command:
+   kubectl -n default delete job.batch/autocert

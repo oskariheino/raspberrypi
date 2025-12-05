@@ -2,29 +2,28 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: hass
-  name: hass
+    app: home
+  name: home
   namespace: homeassistant
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: hass
+      app: home
   strategy: {}
   template:
     metadata:
       labels:
-        app: hass
+        app: home
     spec:
       containers:
       - image: homeassistant/home-assistant
         name: home-assistant
         imagePullPolicy: IfNotPresent
-        # Mounting the persistent volume here ensures HomeAssistant configs survive Raspberry Pi reboots and pod restarts.
         volumeMounts:
-        - name: hass-pv
-          mountPath: /config
+        - name: home-pv
+          mountPath: /config   # Mounting the persistent volume here ensures HomeAssistant configs survive Raspberry Pi reboots and pod restarts.
       volumes:
-      - name: hass-pv
+      - name: home-pv
         persistentVolumeClaim:
-          claimName: hass-pvc
+          claimName: home-pvc

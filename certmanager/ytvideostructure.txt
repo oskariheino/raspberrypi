@@ -1,0 +1,19 @@
+How to set up cert-manager in K3s and issue your own TLS certificates 
+automatically via a fully self-signed CA.
+
+- Install cert-manager
+	* Using kubectl
+
+- Create a self-signed CA and ClusterIssuer
+	* ClusterIssuer.yaml
+
+- Issue TLS cert for an NGINX ingress
+	* Show Nginx NS
+	* Create ingress resource
+
+- Add the CA to external trusts
+	* Windows
+	* Linux
+	
+DNS:
+https://nginx.192-168-0-37.nip.io/

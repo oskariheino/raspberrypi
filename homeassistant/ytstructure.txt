@@ -1,0 +1,36 @@
+HOW TO INSTALL HOME ASSISTANT IN A K3S CLUSTER WITH A PERSISTENT VOLUME
+- Using a LoadBalancer service type
+- Using a ClusterIP service type with an ingress
+
+1. CREATE THE PVC
+
+2. CREATE THE HOME ASSISTANT DEPLOYMENT
+
+3. CREATE A SERVICE 
+
+4. CREATE SOME DATA IN HOME ASSISTANT
+
+5. CHANGE TO CLUSTERIP SERVICE + AN INGRESS
+
+6. TEST THE CONFIGURATION (+ POD RESTARTS)
+
+
+
+
+
+Traefik acts as a reverse proxy and terminates the HTTPS to forward the 
+request to Home Assistant from inside the cluster. So we need to tell HASS 
+to trust this new IP which is not of the original client. 
+With LB no proxy as it hits the IP of raspberry pi directly so no need to
+specify any reverse proxies or trust them
+
+http:
+  use_x_forwarded_for: true    # must include trusted_proxies if use_x_forwarded_for used
+  trusted_proxies: 
+    - 10.42.0.0/16	       # K3s default pod CIDR
+	
+DNS: hass.192-168-0-37.nip.io
+
+K3s comes with a tiny built-in load balancer ServiceLB
+When you create a LoadBalancer service K3s automatically
+exposes 

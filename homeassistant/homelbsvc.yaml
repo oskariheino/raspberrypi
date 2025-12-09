@@ -10,4 +10,4 @@ spec:
   - port: 8123        # Port on the service  -  Home Assistant default port
     targetPort: 8123  # Port on the container
     protocol: TCP
-  type: ClusterIP     # Exposed within the cluster, ingress will handle the LAN-wide exposing
+  type: LoadBalancer  # K3s provides a load balancer known as ServiceLB that uses available host ports

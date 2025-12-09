@@ -10,20 +10,19 @@ spec:
   selector:
     matchLabels:
       app: home
-  strategy: {}
   template:
     metadata:
       labels:
         app: home
     spec:
       containers:
-      - image: homeassistant/home-assistant
+      - image: homeassistant/home-assistant # Official homeassistant image
         name: home-assistant
         imagePullPolicy: IfNotPresent
         volumeMounts:
         - name: home-pv
-          mountPath: /config   # Mounting the persistent volume here ensures HomeAssistant configs survive Raspberry Pi reboots and pod restarts.
-      volumes:
+          mountPath: /config                # Mounting the persistent volume here ensures HomeAssistant configs
+      volumes:                              # survive Raspberry Pi reboots and pod restarts.
       - name: home-pv
         persistentVolumeClaim:
           claimName: home-pvc

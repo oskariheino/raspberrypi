@@ -1,25 +1,24 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  annotations:
-    # add an annotation indicating the issuer to use.
-    cert-manager.io/cluster-issuer: ca-issuer
+  annotations:                                # Add an annotation indicating the certificate issuer to use.
+    cert-manager.io/cluster-issuer: ca-issuer # Cluster-wide ClusterIssuer
   name: homeingress
   namespace: homeassistant
 spec:
-  ingressClassName: traefik
+  ingressClassName: traefik                   # K3s cefault ingress controller
   rules:
-  - host: home.192-168-0-37.nip.io
+  - host: home.192-168-0-37.nip.io            # nip.io allows DNS mapping without editing /etc/hosts 
     http:
       paths:
       - backend:
           service:
-            name: homesvc
+            name: homesvc                     # Make sure to link to the correct service name
             port:
               number: 8123
         path: /
         pathType: Prefix
-  tls: # < placing a host in the TLS config will determine what ends up in the cert's subjectAltNames
+  tls:                                       # Placing a host in the TLS config will determine what ends up in the cert's subjectAltNames
   - hosts:
     - home.192-168-0-37.nip.io
-    secretName: home-cert # < cert-manager will store the created certificate in this secret.
+    secretName: home-cert                    # cert-manager will store the new certificate in this secret. 

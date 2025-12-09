@@ -4,7 +4,7 @@ metadata:
   name: home-pvc
   namespace: homeassistant
 spec:
-  storageClassName: local-path  # Local Path Provisioner provisions volumes from the node's local storage. Great for single-node k3s homelab.
+  storageClassName: local-path  # Local Path Provisioner provisions volumes from the node's local storage. Great for single-node clusters
                                 # Creates local PVs automatically under /var/lib/rancher/k3s/storage
   accessModes:
     - ReadWriteOnce

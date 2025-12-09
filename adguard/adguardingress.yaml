@@ -1,7 +1,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  creationTimestamp: null
+  annotations:                        # Add an annotation indicating the issuer to use for signing the fresh certificates
+    cert-manager.io/cluster-issuer: ca-issuer
   name: adguard
   namespace: adguard
 spec:
@@ -17,5 +18,7 @@ spec:
               number: 80
         path: /
         pathType: Prefix
-status:
-  loadBalancer: {}
+  tls:                                # Placing a host in the TLS config will determine what ends up in the cert's subjectAltNames
+  - hosts:
+    - adguard.192-168-0-37.nip.io
+    secretName: adguard-cert

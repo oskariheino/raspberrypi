@@ -32,7 +32,7 @@ metadata:
   namespace: adguard
 spec:
   ports:
-  - port: 8080          # 80 was taken so 8080 it is now.
+  - port: 8080     # 80 was taken so 8080 it is now.
     protocol: TCP
     targetPort: 80      # AdGuard Home's main web interface | This one needs to be 80 
   selector:

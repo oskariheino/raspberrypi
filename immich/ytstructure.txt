@@ -1,0 +1,11 @@
+HOW TO RUN IMMICH IN A K3S CLUSTER 
+YOUR OWN PHOTO & VIDEO BACKUP SOLUTION
+
+1. Create namespace
+2. Create Immich library PVC
+3. Deploy PostgreSQL (CNPG cluster)
+4. Verify DB secret exists
+5. Helm install Immich
+6. Create Ingress
+7. Verify TLS + access
+8. Demo

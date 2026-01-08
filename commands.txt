@@ -9,3 +9,6 @@ cat /sys/devices/platform/cooling_fan/hwmon/hwmon3/fan1_input
 
 #Pin nykyinen lämpotila - jaa 1000 saadaksesi Celcius
 cat /sys/class/thermal/thermal_zone0/temp
+
+#Disable WLAN
+sudo rfkill block wifi

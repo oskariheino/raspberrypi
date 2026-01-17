@@ -1,1 +1,22 @@
-Here we have bunch of YAMLs of apps that I am running in my Raspberry Pi 5 home server
+www.youtube.com/@kubernetestube
+
+
+Open-source applications that I am running in my homeserver.
+
+Current setup:
+Raspberry Pi 5 8GB
+Active Cooler for Raspberry Pi 5
+256GB SSD
+More information on my homeserver:
+https://youtu.be/FjdTAAbxBaE
+
+I normally run these applications beforehand & get to know them, 
+before feeding my mostly manually created YAMLs & configurations for AI
+to go through, and give me feedback with possible improvements.
+
+My goal is to run these applications as minimalistic as possible.
+Hopefully, without sacrificing on security.
+
+Anyway, they're all here for use as I don't think the Internet is yet clogged full of K8s tutorials.
+
+If one person finds them useful, I believe it has all been worth it.

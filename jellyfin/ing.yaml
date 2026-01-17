@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:                                # Add an annotation indicating the certificate issuer to use.
+    cert-manager.io/cluster-issuer: ca-issuer # Cluster-wide ClusterIssuer
+  name: jellyfiningress
+  namespace: jellyfin
+spec:
+  ingressClassName: traefik                   # K3s default ingress controller
+  rules:
+  - host: jellyfin.192-168-0-37.nip.io            # nip.io allows DNS mapping without editing /etc/hosts
+    http:
+      paths:
+      - backend:
+          service:
+            name: jellyfintcp              # Make sure to link to the correct service name
+            port:
+              number: 8096
+        path: /
+        pathType: Prefix
+  tls:                                       # Placing a host in the TLS config will determine what ends up in the cert's subjectAltNames
+  - hosts:
+    - jellyfin.192-168-0-37.nip.io
+    secretName: jellyfin-cert                    # cert-manager will store the new certificate in this secret.

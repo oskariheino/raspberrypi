@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: jellyfin
+  name: jellyfin
+  namespace: jellyfin
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: jellyfin
+  template:
+    metadata:
+      labels:
+        app: jellyfin
+    spec:
+      containers:
+      - image: linuxserver/jellyfin:arm64v8-version-10.11.5ubu2404
+        name: jellyfin
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: TZ
+          value: Europe/Helsinki
+        volumeMounts:
+          - mountPath: /config
+            name: jellyconfigpv
+          - mountPath: /data
+            name: jellydatapv
+          - mountPath: /data2
+            name: jellydata2pv
+      restartPolicy: Always
+      volumes:
+      - name: jellyconfigpv
+        persistentVolumeClaim:
+          claimName: jellyconfigpvc
+      - name: jellydatapv
+        persistentVolumeClaim:
+          claimName: jellydatapvc
+      - name: jellydata2pv
+        persistentVolumeClaim:
+          claimName: jellydata2pvc

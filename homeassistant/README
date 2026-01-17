@@ -1,0 +1,15 @@
+### https://youtu.be/YPcnOVsdgOM ###
+
+### HOW TO INSTALL HOME ASSISTANT IN A K3S CLUSTER WITH A PERSISTENT VOLUME ###
+### Using a LoadBalancer service type
+### Using a ClusterIP service type with an ingress
+
+    1. CREATE THE PVC
+
+    2. CREATE THE HOME ASSISTANT DEPLOYMENT
+
+    3. CREATE A SERVICE
+
+    4. CREATE AN INGRESS
+
+    5. TEST THE CONFIGURATION (+ POD RESTARTS)

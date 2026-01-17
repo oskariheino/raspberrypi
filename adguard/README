@@ -1,0 +1,56 @@
+### AdGuard ###
+
+### Some AdGuard settings I use in the Nordics.
+
+### General settings
+
+    Block domains using filters and hosts files -> ✅
+
+    Filter update interval -> 1 hour (Feel free to change)
+
+    Use AdGuard browsing security web service -> ❌
+
+    Enable log -> ✅ (Not a bad idea to have some logs)
+
+    Anonymize client IP -> ✅
+
+    Query logs rotation -> 1 hour 
+
+### Save.
+
+    Enable statistics -> ✅
+
+    Statistics retention -> 1 hour
+
+### Save.
+
+### DNS settings
+
+### Upstream DNS servers
+
+    https://dns.quad9.net/dns-query
+    tls://dns.quad9.net
+
+    Parallel requests -> ✅
+
+    Fallback DNS servers -> Empty
+
+    Bootstrap DNS servers ->
+    9.9.9.9
+    149.112.112.112
+    2620:fe::fe
+    2620:fe::9
+
+### Test upstream --> Apply
+
+    Rate limit -> 0
+
+    Enable EDNS client subnet -> ❌
+
+    Enable DNSSEC -> ✅
+
+    Disable resolving of IPv6 addresses -> ❌
+
+    Blocking mode -> Default
+
+### Save.

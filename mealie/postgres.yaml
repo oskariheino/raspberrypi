@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: postgres
+  name: postgres
+  namespace: mealie
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - image: postgres:17
+        name: postgres
+        volumeMounts:
+          - mountPath: "/var/lib/postgresql/data"
+            name: postgrespv
+        env:
+        - name: POSTGRES_PASSWORD
+          value: mealie
+        - name: POSTGRES_USER
+          value: mealie
+        - name: PGUSER
+          value: mealie
+        - name: POSTGRES_DB
+          value: mealie
+      restartPolicy: Always
+      volumes:
+      - name: postgrespv
+        persistentVolumeClaim:
+          claimName: postgrespvc
+status: {}

@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: mealie
+  name: mealie
+  namespace: mealie
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mealie
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: mealie
+    spec:
+      containers:
+      - image: ghcr.io/mealie-recipes/mealie:v3.9.2
+        name: mealie
+        volumeMounts:
+          - mountPath: "/app/data/"
+            name: mealiepv
+        env:
+        - name: POSTGRES_PASSWORD
+          value: mealie
+        - name: POSTGRES_USER
+          value: mealie
+        - name: PGUSER
+          value: mealie
+        - name: POSTGRES_DB
+          value: mealie
+        - name: POSTGRES_SERVER
+          value: postgres
+        - name: DB_ENGINE
+          value: postgres
+        - name: POSTGRES_PORT
+          value: "5432"
+      restartPolicy: Always
+      volumes:
+      - name: mealiepv
+        persistentVolumeClaim:
+          claimName: mealiepvc
+status: {}

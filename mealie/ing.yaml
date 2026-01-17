@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:                                # Add an annotation indicating the certificate issuer to use.
+    cert-manager.io/cluster-issuer: ca-issuer # Cluster-wide ClusterIssuer
+  name: mealieingress
+  namespace: mealie
+spec:
+  ingressClassName: traefik                   # K3s default ingress controller
+  rules:
+  - host: mealie.192-168-0-37.nip.io            # nip.io allows DNS mapping without editing /etc/hosts
+    http:
+      paths:
+      - backend:
+          service:
+            name: mealie              # Make sure to link to the correct service name
+            port:
+              number: 9925
+        path: /
+        pathType: Prefix
+  tls:                                       # Placing a host in the TLS config will determine what ends up in the cert's subjectAltNames
+  - hosts:
+    - mealie.192-168-0-37.nip.io
+    secretName: mealie-cert                    # cert-manager will store the new certificate in this secret.

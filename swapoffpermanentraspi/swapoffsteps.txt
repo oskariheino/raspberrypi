@@ -1,0 +1,18 @@
+#HOW TO DISABLE SWAP IN RASPBERRY PI OS WHEN THERE IS NOT FSTAB ENTRY FOR SWAP
+
+#Disable the zram swap service which creates the SWAP:
+sudo systemctl disable --now systemd-zram-setup@zram0.service
+
+#Mask the service to prevent future re-enabling by updates
+sudo systemctl mask systemd-zram-setup@zram0.service
+
+#Turn off swap
+sudo swapoff -a
+
+#Boot and check whether it worked
+reboot
+
+#Check with these:
+lsblk
+free -h
+cat /proc/swaps

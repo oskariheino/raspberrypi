@@ -1,0 +1,2 @@
+helm delete --namespace immich immich
+helm install --create-namespace --namespace immich immich oci://ghcr.io/immich-app/immich-charts/immich -f values.yaml

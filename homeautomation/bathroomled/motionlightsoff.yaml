@@ -1,0 +1,17 @@
+alias: Motion Lighting Off
+description: ""
+triggers:
+  - entity_id:
+      - binary_sensor.hue_motion_sensor_1_motion
+    to:
+      - "off"
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    trigger: state
+actions:
+  - target:
+      entity_id: light.led
+    action: light.turn_off
+mode: restart

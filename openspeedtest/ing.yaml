@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  creationTimestamp: null
+  name: openspeedtest
+  namespace: openspeedtest
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: openspeedtest.192-168-0-37.nip.io
+    http:
+      paths:
+      - backend:
+          service:
+            name: openspeedtest
+            port:
+              number: 3000
+        path: /
+        pathType: Prefix
+status:
+  loadBalancer: {}

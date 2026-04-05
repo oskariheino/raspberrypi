@@ -22,7 +22,7 @@ spec:
         app: jellyfin
     spec:
       containers:
-      - image: linuxserver/jellyfin:arm64v8-version-10.11.5ubu2404
+      - image: linuxserver/jellyfin:arm64v8-version-10.11.8ubu2404
         name: jellyfin
         env:
         - name: PUID
@@ -38,6 +38,7 @@ spec:
             name: jellydatapv
           - mountPath: /data2
             name: jellydata2pv
+      imagePullPolicy: IfNotPresent
       restartPolicy: Always
       volumes:
       - name: jellyconfigpv

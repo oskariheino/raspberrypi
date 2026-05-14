@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db
+  namespace: sure
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - secretRef:
+                name: sure-secrets
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-data
+          readinessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - sure_user
+            initialDelaySeconds: 5
+            periodSeconds: 5
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+  namespace: sure
+spec:
+  selector:
+    app: db
+  ports:
+    - port: 5432

@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: traefik                   # K3s cefault ingress controller
   rules:
-  - host: home.192-168-0-37.nip.io            # nip.io allows DNS mapping without editing /etc/hosts 
+  - host: homeassistant.home            # nip.io allows DNS mapping without editing /etc/hosts 
     http:
       paths:
       - backend:
@@ -20,5 +20,5 @@ spec:
         pathType: Prefix
   tls:                                       # Placing a host in the TLS config will determine what ends up in the cert's subjectAltNames
   - hosts:
-    - home.192-168-0-37.nip.io
+    - homeassistant.home
     secretName: home-cert                    # cert-manager will store the new certificate in this secret. 

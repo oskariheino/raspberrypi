@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:                                # Add an annotation indicating the certificate issuer to use.
+    cert-manager.io/cluster-issuer: ca-issuer # Cluster-wide ClusterIssuer
+  name: snapotteringress
+  namespace: snapotter
+spec:
+  ingressClassName: traefik                   # K3s default ingress controller
+  rules:
+  - host: snapotter.home            # nip.io allows DNS mapping without editing /etc/hosts
+    http:
+      paths:
+      - backend:
+          service:
+            name: snapotter              # Make sure to link to the correct service name
+            port:
+              number: 1349
+        path: /
+        pathType: Prefix
+  tls:                                       # Placing a host in the TLS config will determine what ends up in the cert's subjectAltNames
+  - hosts:
+    - snapotter.home
+    secretName: snapotter-cert                    # cert-manager will store the new certificate in this secret.

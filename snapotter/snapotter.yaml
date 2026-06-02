@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: snapotter
+  name: snapotter
+  namespace: snapotter
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: snapotter
+  template:
+    metadata:
+      labels:
+        app: snapotter
+    spec:
+      containers:
+      - image: snapotter/snapotter:latest
+        name: snapotter
+        env:
+        - name: AUTH_ENABLED
+          value: "true"
+        - name: DEFAULT_USERNAME
+          value: "admin"
+        - name: DEFAULT_PASSWORD
+          value: "admin"
+        volumeMounts:
+          - mountPath: /data
+            name: snapdata
+      restartPolicy: Always
+      volumes:
+      - name: snapdata
+        persistentVolumeClaim:
+          claimName: data

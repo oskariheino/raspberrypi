@@ -1,8 +1,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  annotations:
-    cert-manager.io/cluster-issuer: ca-issuer
+#  annotations:
+#    cert-manager.io/cluster-issuer: ca-issuer
   name: filebrowser
   namespace: filebrowser
 spec:
@@ -19,7 +19,7 @@ spec:
                 name: filebrowser
                 port:
                   number: 80
-  tls:
-  - hosts:
-    - files.home
-    secretName: files-cert
+#  tls:
+#  - hosts:
+#    - files.home
+#    secretName: files-cert

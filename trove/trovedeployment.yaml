@@ -1,0 +1,88 @@
+# Trove Kubernetes agent — in-cluster, strictly read-only.
+#
+# The ClusterRole grants only list/get/watch on the workload and pod resources
+# the agent reads; it can never mutate anything. Trove is read-only by design.
+#
+# Before applying:
+#   1. Create the token secret (get the token from `trove-server agent create`):
+#        kubectl create namespace trove
+#        kubectl -n trove create secret generic trove-agent \
+#          --from-literal=token='trove_xxxxx'
+#   2. Set TROVE_SERVER_URL and TROVE_CLUSTER_NAME below, then:
+#        kubectl apply -f trove-agent.yaml
+#
+# The image is published at ghcr.io/techdox/trove-agent-k8s (amd64 + arm64).
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: trove
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: trove-agent
+  namespace: trove
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: trove-agent-readonly
+rules:
+  - apiGroups: ["apps"]
+    resources: ["deployments", "statefulsets", "daemonsets", "replicasets"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: trove-agent-readonly
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: trove-agent-readonly
+subjects:
+  - kind: ServiceAccount
+    name: trove-agent
+    namespace: trove
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trove-agent
+  namespace: trove
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: trove-agent }
+  template:
+    metadata:
+      labels: { app: trove-agent }
+    spec:
+      serviceAccountName: trove-agent
+      containers:
+        - name: agent
+          image: ghcr.io/techdox/trove-agent-k8s:0.12.1 # x-release-please-version
+          env:
+            - name: TROVE_SERVER_URL
+              value: "http://192.168.0.37:8080"
+            - name: TROVE_CLUSTER_NAME
+              value: "k3s_homelab"
+            - name: TROVE_INTERVAL
+              value: "30s"
+            - name: TROVE_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: trove-agent
+                  key: token
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities: { drop: ["ALL"] }
+          resources:
+            requests: { cpu: 10m, memory: 32Mi }
+            limits: { cpu: 100m, memory: 64Mi }

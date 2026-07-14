@@ -12,3 +12,13 @@ cat /sys/class/thermal/thermal_zone0/temp
 
 #Disable WLAN
 sudo rfkill block wifi
+
+#Free up space
+# https://docs.docker.com/engine/manage-resources/pruning/
+docker image prune -a
+docker container prune
+docker volume prune -a
+docker network prune
+docker buildx prune
+docker system prune
+

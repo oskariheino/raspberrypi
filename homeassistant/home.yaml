@@ -16,7 +16,7 @@ spec:
         app: home
     spec:
       containers:
-      - image: homeassistant/home-assistant # Official homeassistant image
+      - image: homeassistant/home-assistant:latest # Official homeassistant image
         name: home-assistant
         imagePullPolicy: IfNotPresent
         volumeMounts:

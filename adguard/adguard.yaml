@@ -20,7 +20,7 @@ spec:
     spec:
       hostNetwork: true
       containers:
-      - image: adguard/adguardhome # Official AdGuard Home image. Contains DNS server + Web UI.
+      - image: adguard/adguardhome:v0.107.79 # Official AdGuard Home image. Contains DNS server + Web UI.
         name: adguardhome
         imagePullPolicy: IfNotPresent
         # Two separate PVCs: one for working data and one for config.

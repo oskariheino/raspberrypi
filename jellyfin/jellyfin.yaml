@@ -22,7 +22,7 @@ spec:
         app: jellyfin
     spec:
       containers:
-      - image: linuxserver/jellyfin:latest
+      - image: linuxserver/jellyfin:arm64v8-version-12.0ubu2604
         name: jellyfin
         env:
         - name: PUID

@@ -1,0 +1,9 @@
+services:
+  adguardhome:
+    image: adguard/adguardhome:v0.107.79
+    container_name: adguardhome
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - /home/raspi/raspconfigs/docker/adguardhome/work:/opt/adguardhome/work
+      - /home/raspi/raspconfigs/docker/adguardhome/conf:/opt/adguardhome/conf

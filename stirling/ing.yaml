@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: stirling
+  namespace: stirling
+spec:
+  ingressClassName: traefik                   # K3s cefault ingress controller
+  rules:
+  - host: stirling.home
+    http:
+      paths:
+      - backend:
+          service:
+            name: stirling                     # Make sure to link to the correct service name
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix

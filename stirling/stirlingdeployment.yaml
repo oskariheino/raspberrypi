@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: stirling
+  name: stirling
+  namespace: stirling
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stirling
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: stirling
+    spec:
+      containers:
+      - image: stirlingtools/stirling-pdf:3.2.2
+        name: stirling-pdf
+        ports:
+        - containerPort: 8080
+        resources: {}
+status: {}
